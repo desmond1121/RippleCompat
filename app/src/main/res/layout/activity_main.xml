@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="7dp"
-            android:text="Test HEART!"
+            android:text="TextView with background!"
             android:background="@drawable/lufi"
             android:textSize="40dp"
             android:textColor="#ffffff"
