@@ -9,8 +9,8 @@
 
 ##Demo
 
-![Demo1](/demo1.gif)
-![Demo2](/demo2.gif)
+![Demo1](/demo/demo1.gif)
+![Demo2](/demo/demo2.gif)
 
 ##How to use?
 
