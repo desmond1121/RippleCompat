@@ -22,7 +22,7 @@ Include `jcenter` in your project:
     
 add dependency in module:
 
-    compile 'com.desmond.ripple:ripplecompat:0.1.0'
+    compile 'com.desmond.may:ripplecompat:0.1.2'
 
 Init library in your `Activity`:
         
