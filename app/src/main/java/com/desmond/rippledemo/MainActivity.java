@@ -1,6 +1,5 @@
-package com.desmond.ripple;
+package com.desmond.rippledemo;
 
-import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.desmond.ripple.RippleCompat;
+import com.desmond.ripple.RippleCompatDrawable;
+import com.desmond.ripple.RippleConfig;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private int[] color = new int[]{
