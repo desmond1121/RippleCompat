@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 public class RippleCompat {
-    private static final String TAG = "RippleCompat";
     private static InputMethodManager imm = null;
 
     public static void init(Context context){
@@ -21,11 +20,25 @@ public class RippleCompat {
     }
 
     public static void apply(View v){
-        apply(v, RippleConfig.getDefaultConfig());
+        apply(v, RippleConfig.getDefaultConfig(), null);
+    }
+
+    public static void apply(View v, int rippleColor){
+        RippleConfig config = new RippleConfig();
+        config.setRippleColor(rippleColor);
+        apply(v, config, null);
     }
 
     public static void apply(View v, RippleConfig config){
+        apply(v, config, null);
+    }
+
+    public static void apply(View v, RippleConfig config, RippleCompatDrawable.OnFinishListener onFinishListener){
         RippleCompatDrawable drawable = new RippleCompatDrawable(config);
+
+        if(onFinishListener != null){
+            drawable.setOnFinishListener(onFinishListener);
+        }
 
         Drawable background = v.getBackground();
 

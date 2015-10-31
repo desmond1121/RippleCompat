@@ -11,11 +11,10 @@ import android.widget.Button;
  */
 public class RippleUtil {
     public static final int FRAME_INTERVAL = 1000/60;
-    public static final int DEFAULT_INT = -1;
 
     public static final int MAX_RIPPLE_RADIUS = dip2px(200);
     public static final int MIN_RIPPLE_RADIUS = dip2px(30);
-    public static final int RIPPLE_DURATION = 300;
+    public static final int RIPPLE_DURATION = 400;
     public static final int FADE_DURATION = 300;
 
     public static final int MATERIAL_ET_INSET_TOP = 10;

@@ -13,10 +13,11 @@ public class RippleConfig {
     private int fadeDuration = RippleUtil.FADE_DURATION;
     private int rippleColor = 0xa000ff00;
     private int backgroundColor = Color.TRANSPARENT;
-    private boolean isFull = true;
     private int maxRippleRadius = RippleUtil.MAX_RIPPLE_RADIUS;
     private Interpolator interpolator = new AccelerateInterpolator();
     private RippleCompatDrawable.Type type = RippleCompatDrawable.Type.CIRCLE;
+    private boolean isFull = false;
+    private boolean isSpin = false;
 
     private static RippleConfig dConfig = new RippleConfig();
 
@@ -93,8 +94,19 @@ public class RippleConfig {
             case HEART:
                 return RipplePathFactory.produceHeartPath();
 
+            case TRIANGLE:
+                return RipplePathFactory.produceTrianglePath();
+
             default:
                 return RipplePathFactory.produceCirclePath();
         }
+    }
+
+    public boolean isSpin() {
+        return isSpin;
+    }
+
+    public void setIsSpin(boolean isSpin) {
+        this.isSpin = isSpin;
     }
 }

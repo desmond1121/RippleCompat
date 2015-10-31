@@ -4,18 +4,14 @@ import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RadialGradient;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 
 /**
@@ -23,11 +19,15 @@ import android.view.animation.Interpolator;
  * Created by Jiayi Yao on 2015/10/28.
  */
 public class RippleCompatDrawable extends Drawable implements View.OnTouchListener {
-
     private enum Speed {PRESSED, NORMAL}
 
-    public enum Type {CIRCLE, HEART}
+    public enum Type {CIRCLE, HEART, TRIANGLE}
 
+    public interface OnFinishListener {
+        void onFinish();
+    }
+
+    private OnFinishListener mOnFinishListener;
     private Paint mPaint;
     private Speed mSpeed;
     private Path mRipplePath;
@@ -37,9 +37,9 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
     private int mRippleDuration;
     private int mMaxRippleRadius;
     private int mBackgroundColor;
-    private Drawable mBackgroundDrawable;
     private int mFadeDuration;
     private int mAlpha;
+    private float mDegree;
     private int mPaddingLeft = 0;
     private int mPaddingRight = 0;
     private int mPaddingTop = 0;
@@ -52,9 +52,10 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
     private int lastX;
     private int lastY;
     private float lastScale = 0f;
-    private Matrix mMatrix;
 
     private boolean isFull = false;
+    private boolean isSpin = false;
+
     private boolean isWaving  = false;
     private boolean isPressed = false;
 
@@ -74,12 +75,12 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
     public RippleCompatDrawable(RippleConfig config){
         this(config.getRippleColor(), config.getBackgroundColor(), config.getMaxRippleRadius(),
                 config.getRippleDuration(), config.getInterpolator(), config.getFadeDuration(),
-                config.isFull(), config.getPath());
+                config.isFull(), config.getPath(), config.isSpin());
     }
 
     private RippleCompatDrawable(int rippleColor, int backgroundColor, int maxRippleRadius,
                                  int rippleDuration, Interpolator interpolator, int fadeDuration,
-                                 boolean isFull, Path path) {
+                                 boolean isFull, Path path, boolean isSpin) {
         mRippleColor = rippleColor;
         mBackgroundColor = backgroundColor;
         mMaxRippleRadius = maxRippleRadius;
@@ -88,27 +89,26 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         mFadeDuration = fadeDuration;
 
         this.isFull = isFull;
+        this.isSpin = isSpin;
 
         mRipplePath = path;
 
         mPaint = new Paint();
-        mPaint.setColor(mRippleColor);
-        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
-        mAlpha = (mRippleColor >> 24) & 0x000000ff;
-        mMatrix = new Matrix();
+        mAlpha = Color.alpha(mRippleColor);
     }
 
     @Override
     public void draw(Canvas canvas) {
         canvas.clipRect(mPaddingLeft, mPaddingTop, canvas.getWidth() - mPaddingRight, canvas.getHeight() - mPaddingBottom);
         canvas.drawColor(mBackgroundColor);
+
         canvas.save();
         canvas.translate(x, y);
         canvas.scale(mScale, mScale);
+        if(isSpin) canvas.rotate(mDegree);
         canvas.drawPath(mRipplePath, mPaint);
         canvas.restore();
-//        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), mPaint);
     }
 
     @Override
@@ -132,6 +132,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
     private long elapsedOffset = 0;
 
     private void updateRipple(Speed speed) {
+        float progress = 0f;
         if(isWaving){
             long elapsed = SystemClock.uptimeMillis() - mStartTime;
             if (speed == Speed.PRESSED) {
@@ -140,7 +141,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
             } else {
                 elapsed = elapsed - elapsedOffset;
             }
-            float progress = Math.min(1f, (float) elapsed / mRippleDuration);
+            progress = Math.min(1f, (float) elapsed / mRippleDuration);
             isWaving = progress <= 0.99f;
             mScale = (mMaxRippleRadius - RippleUtil.MIN_RIPPLE_RADIUS) / RippleUtil.MIN_RIPPLE_RADIUS * mInterpolator.getInterpolation(progress) + 1f;
         } else{
@@ -150,6 +151,11 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         lastX = x;
         lastY = y;
         lastScale = mScale;
+
+        mPaint.setColor(mRippleColor);
+        mPaint.setStyle(Paint.Style.FILL);
+
+        mDegree = progress * 480f;
 
         mPaint.setAlpha(mAlpha);
         invalidateSelf();
@@ -172,6 +178,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
                 elapsedOffset = 0;
                 lastX = x;
                 lastY = y;
+                mDegree = 0;
 
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -191,6 +198,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
     }
 
     public void startFadeAnimation() {
+        if(mOnFinishListener != null) mOnFinishListener.onFinish();
         mFadeAnimator = ValueAnimator.ofInt(mAlpha, 0);
         mFadeAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -223,7 +231,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         mBackgroundColor = backgroundColor;
     }
 
-    public void setBackgroundDrawable(Drawable backgroundDrawable) {
-        mBackgroundDrawable = backgroundDrawable;
+    public void setOnFinishListener(OnFinishListener onFinishListener) {
+        mOnFinishListener = onFinishListener;
     }
 }
