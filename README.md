@@ -30,7 +30,7 @@ Add a simple line of code for each view you want to ripple:
 
 Add dependency in module:
 
-    compile 'com.github.desmond1121:ripplecompat:0.2.0'
+    compile 'com.github.desmond1121:ripplecompat:1.0.0'
 
 ##More Customization
 
