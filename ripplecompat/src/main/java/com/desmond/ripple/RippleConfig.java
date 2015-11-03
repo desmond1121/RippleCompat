@@ -2,8 +2,10 @@ package com.desmond.ripple;
 
 import android.graphics.Color;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.ImageView;
 
 /**
  * Created by Jiayi Yao on 2015/10/30.
@@ -13,6 +15,8 @@ public class RippleConfig {
     private int fadeDuration = RippleUtil.FADE_DURATION;
     private int rippleColor = 0xa000ff00;
     private int backgroundColor = Color.TRANSPARENT;
+    private Drawable backgroundDrawable = null;
+    private ImageView.ScaleType scaleType = ImageView.ScaleType.FIT_CENTER;
     private int maxRippleRadius = RippleUtil.MAX_RIPPLE_RADIUS;
     private Interpolator interpolator = new AccelerateInterpolator();
     private RippleCompatDrawable.Type type = RippleCompatDrawable.Type.CIRCLE;
@@ -108,5 +112,21 @@ public class RippleConfig {
 
     public void setIsSpin(boolean isSpin) {
         this.isSpin = isSpin;
+    }
+
+    public Drawable getBackgroundDrawable() {
+        return backgroundDrawable;
+    }
+
+    public ImageView.ScaleType getScaleType() {
+        return scaleType;
+    }
+
+    public void setBackgroundDrawable(Drawable backgroundDrawable) {
+        this.backgroundDrawable = backgroundDrawable;
+    }
+
+    public void setScaleType(ImageView.ScaleType scaleType) {
+        this.scaleType = scaleType;
     }
 }

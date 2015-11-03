@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,6 +14,7 @@ import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Interpolator;
+import android.widget.ImageView;
 
 /**
  *
@@ -27,23 +29,29 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         void onFinish();
     }
 
+    private Rect mClipBound;
+    private Rect mDrawableBound;
     private OnFinishListener mOnFinishListener;
     private Paint mPaint;
     private Speed mSpeed;
     private Path mRipplePath;
     private Interpolator mInterpolator;
     private ValueAnimator mFadeAnimator;
+    private Drawable mBackgroundDrawable;
+    private ImageView.ScaleType mScaleType = ImageView.ScaleType.FIT_CENTER;
+    private int mWidth = 0;
+    private int mHeight = 0;
     private int mRippleColor;
     private int mRippleDuration;
     private int mMaxRippleRadius;
     private int mBackgroundColor;
     private int mFadeDuration;
     private int mAlpha;
-    private float mDegree;
     private int mPaddingLeft = 0;
     private int mPaddingRight = 0;
     private int mPaddingTop = 0;
     private int mPaddingBottom = 0;
+    private float mDegree;
 
     private long mStartTime;
     private int x;
@@ -55,7 +63,6 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
 
     private boolean isFull = false;
     private boolean isSpin = false;
-
     private boolean isWaving  = false;
     private boolean isPressed = false;
 
@@ -100,8 +107,19 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.clipRect(mPaddingLeft, mPaddingTop, canvas.getWidth() - mPaddingRight, canvas.getHeight() - mPaddingBottom);
-        canvas.drawColor(mBackgroundColor);
+
+        if(mBackgroundDrawable == null){
+            canvas.drawColor(mBackgroundColor);
+            canvas.clipRect(mClipBound);
+        }else{
+            if(mDrawableBound == null) {
+                mDrawableBound = RippleUtil.getBound(mScaleType, mClipBound,
+                        mBackgroundDrawable.getIntrinsicWidth(), mBackgroundDrawable.getIntrinsicHeight());
+            }
+            mBackgroundDrawable.setBounds(mDrawableBound);
+            canvas.clipRect(mDrawableBound);
+            mBackgroundDrawable.draw(canvas);
+        }
 
         canvas.save();
         canvas.translate(x, y);
@@ -133,7 +151,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
 
     private void updateRipple(Speed speed) {
         float progress = 0f;
-        if(isWaving){
+        if(isWaving) {
             long elapsed = SystemClock.uptimeMillis() - mStartTime;
             if (speed == Speed.PRESSED) {
                 elapsed = elapsed / 5;
@@ -144,7 +162,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
             progress = Math.min(1f, (float) elapsed / mRippleDuration);
             isWaving = progress <= 0.99f;
             mScale = (mMaxRippleRadius - RippleUtil.MIN_RIPPLE_RADIUS) / RippleUtil.MIN_RIPPLE_RADIUS * mInterpolator.getInterpolation(progress) + 1f;
-        } else{
+        } else {
             mScale = (mMaxRippleRadius - RippleUtil.MIN_RIPPLE_RADIUS) / RippleUtil.MIN_RIPPLE_RADIUS + 1f;
         }
         if(lastX == x && lastY == y && lastScale == mScale) return;
@@ -169,7 +187,10 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
                 y = (int) event.getY();
                 mSpeed = Speed.PRESSED;
 
-                if (mFadeAnimator != null) mFadeAnimator.end();
+                if (mFadeAnimator != null){
+                    mFadeAnimator.removeAllUpdateListeners();
+                    mFadeAnimator.end();
+                }
                 mHandler.removeCallbacks(mRunnable);
                 mStartTime = SystemClock.uptimeMillis();
                 mHandler.postDelayed(mRunnable, RippleUtil.FRAME_INTERVAL);
@@ -212,6 +233,19 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         mFadeAnimator.start();
     }
 
+    protected void setPadding(float l, float t, float r, float b){
+        mPaddingLeft =   RippleUtil.dip2px(l);
+        mPaddingRight =  RippleUtil.dip2px(r);
+        mPaddingTop =    RippleUtil.dip2px(t);
+        mPaddingBottom = RippleUtil.dip2px(b);
+    }
+
+    protected void setMeasure(int width, int height){
+        mWidth = width;
+        mHeight = height;
+        setClipBound();
+    }
+
     public void setMaxRippleRadius(int maxRippleRadius){
         mMaxRippleRadius = maxRippleRadius;
     }
@@ -220,18 +254,30 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         return isFull;
     }
 
-    public void setPadding(float l, float t, float r, float b){
-        mPaddingLeft =   RippleUtil.dip2px(l);
-        mPaddingRight =  RippleUtil.dip2px(r);
-        mPaddingTop =    RippleUtil.dip2px(t);
-        mPaddingBottom = RippleUtil.dip2px(b);
+    protected void setBackgroundColor(int backgroundColor) {
+        mBackgroundColor = backgroundColor;
     }
 
-    public void setBackgroundColor(int backgroundColor) {
-        mBackgroundColor = backgroundColor;
+    public void setBackgroundDrawable(Drawable backgroundDrawable) {
+        mBackgroundDrawable = backgroundDrawable;
+        mDrawableBound = null;
+    }
+
+    public void setScaleType(ImageView.ScaleType scaleType) {
+        mScaleType = scaleType;
+        mDrawableBound = null;
     }
 
     public void setOnFinishListener(OnFinishListener onFinishListener) {
         mOnFinishListener = onFinishListener;
+    }
+
+    private void setClipBound(){
+        if(mClipBound == null){
+            mClipBound = new Rect(mPaddingLeft, mPaddingTop, mWidth - mPaddingRight, mHeight - mPaddingBottom);
+        }else{
+            mClipBound.set(mPaddingLeft, mPaddingTop, mWidth - mPaddingRight, mHeight - mPaddingBottom);
+        }
+        mDrawableBound = null;
     }
 }

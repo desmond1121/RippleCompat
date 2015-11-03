@@ -1,60 +1,74 @@
 #RippleCompat
 ----
 
-- Support ripple with background set;
-- You can choose these type of ripple: Circle, Heart, Triangle;
-- Spinning ripple;
-- You can choose ripple full of view or not;
-- STILL EXPERIMENTING.
-
-##Demo
-
-![Demo1](/demo/demo1.gif)
-![Demo2](/demo/demo2.gif)
-
-##How to use?
-
-Include `jcenter` in your project:
-
-    repositories {
-        jcenter()
-    }
-    
-add dependency in module:
-
-    compile 'com.desmond.may:ripplecompat:0.1.2'
+##Easy To Use!
 
 Init library in your `Activity`:
         
     RippleCompat.init(context);
 
-Use below code for each view you want to ripple:
+Add a simple line of code for each view you want to ripple:
 
     RippleCompat.apply(view);
+    
+##Demo
 
-or more customization:
+![Demo1](/demo/demo1.gif)
+![Demo2](/demo/demo2.gif)
+![Demo3](/demo/demo3.gif)
+
+##Strength
+
+- Support ripple with view's origin background, or you can set a background image with `scaleType`;
+- Support `ImageView`, `TextView`, `Button`, `EditText`. Especially, `android:scaleType` of `ImageView` also works! 
+- You can choose these type of ripple: Circle, Heart, Triangle;
+- Spinning ripple;
+- You can choose ripple full of view or not;
+- STILL EXPERIMENTING MORE.
+
+##Dependency
+
+Add dependency in module:
+
+    compile 'com.github.desmond1121:ripplecompat:0.2.0'
+
+##More Customization
 
     RippleConfig config = new RippleConfig();
+    /* set background color */
     config.setBackgroundColor(backgroundColor);
-    config.setIsFull(isFull);
+    /* set max ripple radius, invoking this method would override the change by setIsFull */
+    config.setMaxRippleRadius(radius);
+    /* set fading duration after ripple to max */
     config.setFadeDuration(duration);
+    /* set ripple duration */
     config.setRippleDuration(rippleDuration);
+    /* set ripple animation interpolator, default is AccelerateInterpolator*/
     config.setInterpolator(interpolator);
+    /* set ripple color */
     config.setRippleColor(rippleColor);
+    /* set ripple shape type , default is CIRCLE*/
     config.setType(RippleCompatDrawable.Type.HEART);
+    /* set background drawable, it would disable the set background color and origin background */
+    config.setBackgroundDrawable(drawable);
+    /* set scaleType of the set drawable, default is FIT_CENTER */
+    config.setScaleType(scaleType);
+    /* set spin ripple */
     config.setIsSpin(isSpin);
+    /* if ripple full of view, invoking this method would override the change by setMaxRippleRadius */
     config.setIsFull(isFull);
     
+    /* Apply config and add listener */
     RippleCompat.apply(view, config, new RippleCompatDrawable.OnFinishListener() {
-                                                 @Override
-                                                 public void onFinish() {
-                                                     Snackbar.make(v, "Ripple Finish!", Snackbar.LENGTH_SHORT).show();
-                                                 }
-                                             });
+        @Override
+        public void onFinish() {
+         Snackbar.make(v, "Ripple Finish!", Snackbar.LENGTH_SHORT).show();
+        }
+    });
 
-##Known Drawbacks
+##Drawback and Tips
 
-- `ScaleType` of `ImageView` would be reset to `fitXY`;
+- Applying in `ImageView` or setting background would disable the ripple background color.
 - It would disable the `OnTouchListener` of the set view. (click listener would be triggered as normal)
 - Some widget (Button, EditText, etc. ) only perform correctly in **AppCompat style widget**. 
 

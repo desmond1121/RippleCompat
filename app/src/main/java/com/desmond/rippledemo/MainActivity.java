@@ -40,8 +40,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         config.setType(RippleCompatDrawable.Type.HEART);
         config.setRippleColor(color[3]);
         config.setIsFull(true);
-        View iv = findViewById(R.id.test_heart);
-        RippleCompat.apply(iv, config);
+        final View iv = findViewById(R.id.test_heart);
+        RippleCompat.apply(iv, config, new RippleCompatDrawable.OnFinishListener() {
+            @Override
+            public void onFinish() {
+                Snackbar.make(iv, "Finish", Snackbar.LENGTH_SHORT).show();
+            }
+        });
 
 //        setContentView(R.layout.activity_main_1);
 //        RippleCompat.init(this);

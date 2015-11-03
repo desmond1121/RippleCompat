@@ -41,13 +41,12 @@
             android:textSize="25dp"
             android:gravity="center"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/test_heart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="7dp"
             android:text="TextView with background!"
-            android:background="@drawable/lufi"
+            android:src="@drawable/lufi"
             android:textSize="40dp"
             android:textColor="#ffffff"
             android:gravity="center"/>

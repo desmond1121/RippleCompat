@@ -9,6 +9,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppCompatTheme" >
         <activity android:name=".MainActivity" >
+
+        </activity>
+
+        <activity android:name=".ScaleTypeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

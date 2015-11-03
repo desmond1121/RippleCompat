@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">RippleLab</string>
+    <string-array name="scale_types">
+        <item>FIT_CENTER</item>
+        <item>FIT_XY</item>
+        <item>CENTER</item>
+        <item>CENTER_CROP</item>
+        <item>CENTER_INSIDE</item>
+        <item>MATRIX</item>
+    </string-array>
 </resources>

@@ -1,15 +1,19 @@
 package com.desmond.ripple;
 
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 /**
  * Created by Jiayi Yao on 2015/10/28.
  */
 public class RippleUtil {
+    private static final String TAG = "RippleUtil";
     public static final int FRAME_INTERVAL = 1000/60;
 
     public static final int MAX_RIPPLE_RADIUS = dip2px(200);
@@ -23,6 +27,9 @@ public class RippleUtil {
 
     public static final int MATERIAL_BTN_INSET_VERTICAL = 6;
     public static final int MATERIAL_BTN_INSET_HORIZONTAL = 4;
+
+    public static final int ANCHOR_START = 1;
+    public static final int ANCHOR_END = -1;
 
     public static int px2dip(int pxValue) {
         final float scale = Resources.getSystem().getDisplayMetrics().density;
@@ -49,5 +56,119 @@ public class RippleUtil {
         }else{
             btn.setBackgroundDrawable(drawable);
         }
+    }
+
+    /**
+     * Get image bound after scaleType.
+     *
+     * @param scaleType
+     * @param bound
+     * @param w
+     * @param h
+     * @return Bound
+     */
+    public static Rect getBound(ImageView.ScaleType scaleType, Rect bound, int w, int h){
+        int l = bound.left;
+        int t = bound.top;
+        int r = bound.right;
+        int b = bound.bottom;
+
+        if(bound.width() == w && bound.height() == h){
+            return new Rect(l, t, r, b);
+        }
+
+        float scale;
+        switch (scaleType){
+            case CENTER:
+                return center(bound, w, h);
+
+            case CENTER_CROP:
+
+                if(compareScale(bound, w, h) >= 0){
+                    scale = (float)bound.width() / w;
+                }else{
+                    scale = (float)bound.height() / h;
+                }
+                return center(bound, w, h, scale);
+
+            case CENTER_INSIDE:
+                if(bound.width() >= w && bound.height() >= h){
+                    return center(bound, w, h);
+                }
+
+                if(compareScale(bound, w, h) >= 0){
+                    scale = (float)bound.height() / h;
+                }else{
+                    scale = (float)bound.width() / w;
+                }
+                return center(bound, w, h, scale);
+
+            case FIT_END:
+                if(compareScale(bound, w, h) >= 0){
+                    scale = (float)bound.height() / h;
+                }else{
+                    scale = (float)bound.width() / w;
+                }
+                return center(bound, w, h, scale, ANCHOR_END);
+
+            case FIT_START:
+                if(compareScale(bound, w, h) >= 0){
+                    scale = (float)bound.height() / h;
+                }else{
+                    scale = (float)bound.width() / w;
+                }
+                return center(bound, w, h, scale, ANCHOR_START);
+
+            case FIT_CENTER:
+                if(compareScale(bound, w, h) >= 0){
+                    scale = (float)bound.height() / h;
+                }else{
+                    scale = (float)bound.width() / w;
+                }
+                return center(bound, w, h, scale);
+
+            case MATRIX:
+                r = l + w;
+                b = t + h;
+                break;
+
+            case FIT_XY:
+            default:
+                break;
+        }
+
+        return new Rect(l, t, r, b);
+    }
+
+    public static int compareScale(Rect rect, int w, int h){
+        return Float.compare(rect.width() / (float) rect.height(),
+                w / (float) h);
+    }
+
+    public static Rect center(Rect rect, int w, int h){
+        return center(rect, w, h, 1f);
+    }
+
+    public static Rect center(Rect rect, int w, int h, float scale){
+        return center(rect, w, h, scale, 0);
+    }
+
+    public static Rect center(Rect rect, int w, int h, float scale, int anchor){
+        w = (int)(w * scale);
+        h = (int)(h * scale);
+
+        int left = rect.left + (rect.width() - w) / 2;
+        int top = rect.top + (rect.height() - h) / 2;
+        int right = left + w;
+        int bottom = top + h;
+
+        int offset = 0;
+        if(anchor == ANCHOR_START){
+            offset = rect.left - left;
+        }else if(anchor == ANCHOR_END){
+            offset = rect.width() - w - left;
+        }
+
+        return new Rect(left+offset, top, right + offset, bottom);
     }
 }

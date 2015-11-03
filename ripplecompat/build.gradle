@@ -4,7 +4,7 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'RippleCompat'
 
-    publishedGroupId = 'com.desmond.may'
+    publishedGroupId = 'com.github.desmond1121'
     libraryName = 'ripplecompat'
     artifact = 'ripplecompat'
 
@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/desmond1121/RippleCompat'
     gitUrl = 'https://github.com/desmond1121/RippleCompat.git'
 
-    libraryVersion = '0.1.2'
+    libraryVersion = '1.0.0'
 
     developerId = 'desmond'
     developerName = 'Desmond Yao'
