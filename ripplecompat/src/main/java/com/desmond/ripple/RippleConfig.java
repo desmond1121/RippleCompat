@@ -14,7 +14,7 @@ public class RippleConfig {
     private int rippleDuration = RippleUtil.RIPPLE_DURATION;
     private int fadeDuration = RippleUtil.FADE_DURATION;
     private int rippleColor = 0x7000ff00;
-    private int backgroundColor = Color.TRANSPARENT;
+    private int paletteMode = RippleUtil.PALETTE_VIBRANT_LIGHT;
     private Drawable backgroundDrawable = null;
     private ImageView.ScaleType scaleType = ImageView.ScaleType.FIT_CENTER;
     private int maxRippleRadius = RippleUtil.MAX_RIPPLE_RADIUS;
@@ -43,14 +43,6 @@ public class RippleConfig {
 
     public void setRippleColor(int rippleColor) {
         this.rippleColor = rippleColor;
-    }
-
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
     }
 
     public boolean isFull() {
@@ -128,5 +120,15 @@ public class RippleConfig {
 
     public void setScaleType(ImageView.ScaleType scaleType) {
         this.scaleType = scaleType;
+    }
+
+    public int getPaletteMode() {
+        return paletteMode;
+    }
+
+    public void setPaletteMode(int paletteMode) {
+        if(paletteMode <= 15 && paletteMode >= 0) {
+            this.paletteMode = paletteMode;
+        }
     }
 }

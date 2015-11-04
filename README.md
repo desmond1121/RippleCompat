@@ -1,11 +1,10 @@
 #RippleCompat
-----
 
 ##Easy To Use!
 
 Init library in your `Activity`:
         
-    RippleCompat.init(context);
+    RippleCompat.init(context, needPalette);
 
 Add a simple line of code for each view you want to ripple:
 
@@ -17,7 +16,8 @@ Add a simple line of code for each view you want to ripple:
 
 ##Strength
 
-- Support ripple with view's origin background, or you can set a background image with `scaleType`;
+- Support ripple with view's origin background, or you can set a background image with `scaleType`!
+- Auto palette ripple color with the background image!
 - Support `ImageView`, `TextView`, `Button`, `EditText`. Especially, `android:scaleType` of `ImageView` also works! 
 - You can choose these type of ripple: Circle, Heart, Triangle;
 - Spinning ripple;
@@ -28,33 +28,22 @@ Add a simple line of code for each view you want to ripple:
 
 Add dependency in module:
 
-    compile 'com.github.desmond1121:ripplecompat:1.1.0'
+    compile 'com.github.desmond1121:ripplecompat:1.2.0'
 
 ##More Customization
 
     RippleConfig config = new RippleConfig();
-    /* set background color */
-    config.setBackgroundColor(backgroundColor);
-    /* set max ripple radius, invoking this method would override the change by setIsFull */
-    config.setMaxRippleRadius(radius);
-    /* set fading duration after ripple to max */
-    config.setFadeDuration(duration);
-    /* set ripple duration */
-    config.setRippleDuration(rippleDuration);
-    /* set ripple animation interpolator, default is AccelerateInterpolator*/
-    config.setInterpolator(interpolator);
-    /* set ripple color */
-    config.setRippleColor(rippleColor);
-    /* set ripple shape type , default is CIRCLE*/
-    config.setType(RippleCompatDrawable.Type.HEART);
-    /* set background drawable, it would disable the set background color and origin background */
-    config.setBackgroundDrawable(drawable);
-    /* set scaleType of the set drawable, default is FIT_CENTER */
-    config.setScaleType(scaleType);
-    /* set spin ripple */
-    config.setIsSpin(isSpin);
-    /* if ripple full of view, invoking this method would override the change by setMaxRippleRadius */
-    config.setIsFull(isFull);
+    config.setMaxRippleRadius(radius); /* set max ripple radius, invoking this method would override the change by setIsFull */
+    config.setFadeDuration(duration); /* set fading duration after ripple to max */
+    config.setRippleDuration(rippleDuration); /* set ripple duration */
+    config.setInterpolator(interpolator); /* set ripple animation interpolator, default is AccelerateInterpolator*/
+    config.setRippleColor(rippleColor); /* set ripple color */
+    config.setType(RippleCompatDrawable.Type.HEART); /* set ripple shape type , default is CIRCLE*/
+    config.setBackgroundDrawable(drawable); /* set background drawable, it would disable the origin background */
+    config.setScaleType(ImageView.ScaleType.FIT_CENTER); /* set scaleType of the set drawable, default is FIT_CENTER */
+    config.setPaletteMode(RippleUtil.PALETTE_VIBRANT_LIGHT); /* set palette mode (1-16) */
+    config.setIsSpin(isSpin); /* set spin ripple */
+    config.setIsFull(isFull); /* if ripple full of view, invoking this method would override the change by setMaxRippleRadius */
     
     /* Apply config and add listener */
     RippleCompat.apply(view, config, new RippleCompatDrawable.OnFinishListener() {
@@ -72,7 +61,8 @@ Add dependency in module:
 
 ##Dependency
 
-v7 support library.
+- 'com.android.support:appcompat-v7:22.2.1'
+- 'com.android.support:palette-v7:22.2.1'
 
 ##LISCENSE
     

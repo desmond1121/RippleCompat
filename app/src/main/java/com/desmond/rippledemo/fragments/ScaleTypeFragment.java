@@ -50,7 +50,9 @@ public class ScaleTypeFragment extends Fragment{
         config.setType(RippleCompatDrawable.Type.HEART);
         RippleCompat.apply(iv, config);
         String[] strings = getResources().getStringArray(R.array.scale_types);
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, strings);
+        ArrayAdapter<String> adapter=new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, strings);
+
+        RippleConfig config1 = new RippleConfig();
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -63,5 +65,6 @@ public class ScaleTypeFragment extends Fragment{
 
             }
         });
+        RippleCompat.apply(spinner, config1);
     }
 }

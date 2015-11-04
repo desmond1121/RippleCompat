@@ -1,9 +1,12 @@
 package com.desmond.ripple;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +23,7 @@ public class RippleUtil {
     public static final int MIN_RIPPLE_RADIUS = dip2px(30);
     public static final int RIPPLE_DURATION = 400;
     public static final int FADE_DURATION = 400;
+    public static final int RIPPLE_COLOR = 0xa000ff00;
 
     public static final int MATERIAL_ET_INSET_TOP = 10;
     public static final int MATERIAL_ET_INSET_BOTTOM = 7;
@@ -30,6 +34,13 @@ public class RippleUtil {
 
     public static final int ANCHOR_START = 1;
     public static final int ANCHOR_END = -1;
+    
+    public static final int PALETTE_VIBRANT = 0;
+    public static final int PALETTE_VIBRANT_LIGHT = 1;
+    public static final int PALETTE_VIBRANT_DARK = 2;
+    public static final int PALETTE_MUTED = 3;
+    public static final int PALETTE_MUTED_LIGHT = 4;
+    public static final int PALETTE_MUTED_DARK = 5;
 
     public static int px2dip(int pxValue) {
         final float scale = Resources.getSystem().getDisplayMetrics().density;
@@ -56,6 +67,45 @@ public class RippleUtil {
         }else{
             btn.setBackgroundDrawable(drawable);
         }
+    }
+
+    public static int alphaColor(int color, int alpha){
+        return (alpha << 24) | 0x00ffffff & color;
+    }
+
+    public static void palette(final RippleCompatDrawable compatDrawable, final Drawable background){
+        palette(compatDrawable, background, PALETTE_VIBRANT_LIGHT);
+    }
+
+    /**
+     * set ripple color with palette of image.
+     *
+     * @param compatDrawable ripple drawable for using
+     * @param background image for palette
+     * @param mode palette mode.
+     */
+    public static void palette(final RippleCompatDrawable compatDrawable, final Drawable background, final int mode){
+        if(!RippleCompat.isEnablePalette()
+                || background.getIntrinsicWidth() <= 0
+                || background.getIntrinsicHeight() <= 0)return;
+        Palette.Builder builder = Palette.from(drawable2Bitmap(background));
+        builder.generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                int color = palette.getSwatches().get(mode).getBodyTextColor();
+                Log.i(TAG, "RippleUtil->onGenerated --info log-- " + Integer.toHexString(color));
+                compatDrawable.setRippleColor(alphaColor(color, 128));
+            }
+        });
+    }
+
+    public static Bitmap drawable2Bitmap(final Drawable drawable){
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     /**

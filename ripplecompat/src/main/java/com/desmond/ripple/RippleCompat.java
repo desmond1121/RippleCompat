@@ -1,8 +1,6 @@
 package com.desmond.ripple;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -20,13 +18,19 @@ public class RippleCompat {
     private static final String TAG = "RippleCompat";
     private static InputMethodManager imm = null;
     private static Context sContext = null;
+    private static boolean isEnablePalette = false;
 
     public static void init(Context context){
-        imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        sContext = context;
+        init(context, false);
     }
 
-    public static void apply(View v){
+    public static void init(Context context, boolean isEnablePalette) {
+        imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        sContext = context;
+        RippleCompat.isEnablePalette = isEnablePalette;
+    }
+
+    public static void apply(View v) {
         apply(v, RippleConfig.getDefaultConfig(), null);
     }
 
@@ -36,7 +40,7 @@ public class RippleCompat {
      * @param v
      * @param rippleColor
      */
-    public static void apply(View v, int rippleColor){
+    public static void apply(View v, int rippleColor) {
         RippleConfig config = new RippleConfig();
         config.setRippleColor(rippleColor);
         apply(v, config, null);
@@ -46,11 +50,11 @@ public class RippleCompat {
      * Set ripple with background
      *
      * @param rippleColor ripple color.
-     * @param v view to set.
-     * @param drawable background drawable.
-     * @param scaleType scaleType.
+     * @param v           view to set.
+     * @param drawable    background drawable.
+     * @param scaleType   scaleType.
      */
-    public static void apply(View v, int rippleColor, Drawable drawable, ImageView.ScaleType scaleType){
+    public static void apply(View v, int rippleColor, Drawable drawable, ImageView.ScaleType scaleType) {
         RippleConfig config = new RippleConfig();
         config.setRippleColor(rippleColor);
         config.setBackgroundDrawable(drawable);
@@ -62,37 +66,37 @@ public class RippleCompat {
      * Set ripple with background
      *
      * @param rippleColor ripple color.
-     * @param v view to set.
-     * @param resId resourceId of background.
-     * @param scaleType scaleType.
+     * @param v           view to set.
+     * @param resId       resourceId of background.
+     * @param scaleType   scaleType.
      */
-    public static void apply(View v, int rippleColor, int resId, ImageView.ScaleType scaleType){
+    public static void apply(View v, int rippleColor, int resId, ImageView.ScaleType scaleType) {
         RippleConfig config = new RippleConfig();
         config.setRippleColor(rippleColor);
 
-        if(sContext != null){
-            try{
+        if (sContext != null) {
+            try {
                 config.setBackgroundDrawable(sContext.getResources().getDrawable(resId));
                 config.setScaleType(scaleType);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             Log.e(TAG, "RippleCompat->apply --err log-- not init context!");
         }
 
         apply(v, config, null);
     }
 
-    public static void apply(View v, RippleConfig config){
+    public static void apply(View v, RippleConfig config) {
         apply(v, config, null);
     }
 
-    public static void apply(View v, RippleConfig config, RippleCompatDrawable.OnFinishListener onFinishListener){
+    public static void apply(View v, RippleConfig config, RippleCompatDrawable.OnFinishListener onFinishListener) {
         v.setFocusableInTouchMode(true);
         final RippleCompatDrawable drawable = new RippleCompatDrawable(config);
-        if(onFinishListener != null){
-            drawable.setOnFinishListener(onFinishListener);
+        if (onFinishListener != null) {
+            drawable.addOnFinishListener(onFinishListener);
         }
         v.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
@@ -109,7 +113,7 @@ public class RippleCompat {
     }
 
     /**
-     * Set ripple background. If set, the "android:background" of the view and background color of ripple
+     * Set ripple background. If set a image background, the background of the view and background color of ripple
      * would be ignored!
      *
      * @param rippleDrawable
@@ -118,7 +122,8 @@ public class RippleCompat {
      */
     private static void adaptBackground(RippleCompatDrawable rippleDrawable, View v, RippleConfig config) {
         Drawable background;
-        if(v instanceof ImageView){
+
+        if (v instanceof ImageView) {
             ImageView.ScaleType scaleType = ((ImageView) v).getScaleType();
             background = ((ImageView) v).getDrawable();
             rippleDrawable.setBackgroundDrawable(background);
@@ -130,38 +135,38 @@ public class RippleCompat {
                     v.getPaddingBottom());
             ((ImageView) v).setImageDrawable(null);
             RippleUtil.setBackground(v, rippleDrawable);
-        }else if(config.getBackgroundDrawable() != null) {
+        } else if (config.getBackgroundDrawable() != null) {
             rippleDrawable.setBackgroundDrawable(config.getBackgroundDrawable());
             rippleDrawable.setScaleType(config.getScaleType());
             RippleUtil.setBackground(v, rippleDrawable);
-        }else {
+        } else {
             background = v.getBackground();
             if (background != null) {
-                rippleDrawable.setBackgroundColor(Color.TRANSPARENT);
                 LayerDrawable layer = new LayerDrawable(new Drawable[]{background, rippleDrawable});
                 RippleUtil.setBackground(v, layer);
             } else {
-                rippleDrawable.setBackgroundColor(config.getBackgroundColor());
                 RippleUtil.setBackground(v, rippleDrawable);
             }
         }
     }
 
-    public static void setScaleType(ImageView iv, ImageView.ScaleType scaleType){
-        if(iv.getBackground() instanceof RippleCompatDrawable){
+
+
+    public static void setScaleType(ImageView iv, ImageView.ScaleType scaleType) {
+        if (iv.getBackground() instanceof RippleCompatDrawable) {
             RippleCompatDrawable drawable = (RippleCompatDrawable) iv.getBackground();
             drawable.setScaleType(scaleType);
             drawable.invalidateSelf();
         }
     }
 
-    private static void measure(final RippleCompatDrawable drawable, final View v){
-        if(v instanceof AppCompatButton){
+    private static void measure(final RippleCompatDrawable drawable, final View v) {
+        if (v instanceof AppCompatButton) {
             drawable.setPadding(RippleUtil.MATERIAL_BTN_INSET_HORIZONTAL,
                     RippleUtil.MATERIAL_BTN_INSET_VERTICAL,
                     RippleUtil.MATERIAL_BTN_INSET_HORIZONTAL,
                     RippleUtil.MATERIAL_BTN_INSET_VERTICAL);
-        }else if(v instanceof AppCompatEditText){
+        } else if (v instanceof AppCompatEditText) {
             drawable.setPadding(
                     RippleUtil.MATERIAL_ET_INSET_HORIZONTAL,
                     RippleUtil.MATERIAL_ET_INSET_TOP,
@@ -169,7 +174,7 @@ public class RippleCompat {
                     RippleUtil.MATERIAL_ET_INSET_BOTTOM + 1.5f);
         }
         v.setFocusableInTouchMode(true);
-        v.setOnTouchListener(new ForwardingTouchListener(drawable));
+        v.setOnTouchListener(new ForwardingTouchListener(drawable, v));
         v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -183,8 +188,18 @@ public class RippleCompat {
     private static class ForwardingTouchListener implements View.OnTouchListener {
         RippleCompatDrawable drawable;
 
-        private ForwardingTouchListener(RippleCompatDrawable drawable){
+        private ForwardingTouchListener(RippleCompatDrawable drawable, final View v) {
             this.drawable = drawable;
+            drawable.addOnFinishListener(new RippleCompatDrawable.OnFinishListener() {
+                @Override
+                public void onFinish() {
+                    if (v instanceof EditText && imm != null) {
+                        v.requestFocus();
+                        imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                    v.performClick();
+                }
+            });
         }
 
         @Override
@@ -192,27 +207,20 @@ public class RippleCompat {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    if(isInBound(event.getX(), event.getY())){
-                        if (v instanceof EditText && imm != null) {
-                            v.requestFocus();
-                            imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
-                        }
-                        return drawable.onTouch(v, event);
-                    }else {
-                        return false;
-                    }
-
-                case MotionEvent.ACTION_UP:
-                    v.performClick();
+                    return isInBound(event.getX(), event.getY()) && drawable.onTouch(v, event);
 
                 default:
                     return drawable.onTouch(v, event);
             }
         }
 
-        private boolean isInBound(float x, float y){
+        private boolean isInBound(float x, float y) {
             Rect rect = drawable.getBackgroundDrawable() == null ? drawable.getClipBound() : drawable.getDrawableBound();
             return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
         }
+    }
+
+    public static boolean isEnablePalette() {
+        return isEnablePalette;
     }
 }
