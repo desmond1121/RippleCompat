@@ -13,7 +13,7 @@ import android.widget.ImageView;
 public class RippleConfig {
     private int rippleDuration = RippleUtil.RIPPLE_DURATION;
     private int fadeDuration = RippleUtil.FADE_DURATION;
-    private int rippleColor = 0xa000ff00;
+    private int rippleColor = 0x7000ff00;
     private int backgroundColor = Color.TRANSPARENT;
     private Drawable backgroundDrawable = null;
     private ImageView.ScaleType scaleType = ImageView.ScaleType.FIT_CENTER;

@@ -1,24 +1,22 @@
 package com.desmond.rippledemo;
 
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.desmond.ripple.RippleCompat;
-import com.desmond.ripple.RippleCompatDrawable;
-import com.desmond.ripple.RippleConfig;
+import com.desmond.rippledemo.fragments.ScaleTypeFragment;
+import com.desmond.rippledemo.fragments.WidgetTestFragment;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private int[] color = new int[]{
-            0x44ff0000,
-            0x4400ff00,
-            0x440000ff,
-            0x4400ffff
-    };
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,47 +24,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         RippleCompat.init(this);
 
-        TextView tv = (TextView) findViewById(R.id.test_textView);
-        RippleCompat.apply(tv, color[0]);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Button btn = (Button) findViewById(R.id.test_button);
-        RippleCompat.apply(btn, color[1]);
-        btn.setOnClickListener(this);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(getAdapter());
 
-        EditText et = (EditText) findViewById(R.id.test_et);
-        RippleCompat.apply(et, color[2]);
-
-        RippleConfig config = new RippleConfig();
-        config.setType(RippleCompatDrawable.Type.HEART);
-        config.setRippleColor(color[3]);
-        config.setIsFull(true);
-        final View iv = findViewById(R.id.test_heart);
-        RippleCompat.apply(iv, config, new RippleCompatDrawable.OnFinishListener() {
-            @Override
-            public void onFinish() {
-                Snackbar.make(iv, "Finish", Snackbar.LENGTH_SHORT).show();
-            }
-        });
-
-//        setContentView(R.layout.activity_main_1);
-//        RippleCompat.init(this);
-//        RippleConfig config = new RippleConfig();
-//        config.setRippleColor(Color.BLUE & 0x7fffffff);
-//        config.setType(RippleCompatDrawable.Type.TRIANGLE);
-//        config.setIsSpin(true);
-//        config.setIsFull(true);
-//        final View v = findViewById(R.id.triangle_spin);
-//        RippleCompat.apply(v, config, new RippleCompatDrawable.OnFinishListener() {
-//            @Override
-//            public void onFinish() {
-//                Snackbar.make(v, "Ripple Finish!", Snackbar.LENGTH_SHORT).show();
-//            }
-//        });
-
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    public void onClick(View v) {
-        Snackbar.make(this.getWindow().getDecorView().findViewById(android.R.id.content), "Pop!", Snackbar.LENGTH_SHORT).show();
+    private ViewPagerAdapter getAdapter(){
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new WidgetTestFragment(), "Widget");
+        adapter.addFragment(new ScaleTypeFragment(), "ScaleType");
+        return adapter;
+    }
+
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragments = new ArrayList<>();
+        private final List<String> mFragmentTitles = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragments.add(fragment);
+            mFragmentTitles.add(title);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitles.get(position);
+        }
     }
 }

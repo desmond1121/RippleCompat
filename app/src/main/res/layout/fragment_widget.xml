@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/test_textView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="7dp"
+            android:text="Test TextView"
+            android:textSize="25dp"
+            android:background="@android:color/holo_green_dark"
+            android:gravity="center"/>
+        <Button
+            android:id="@+id/test_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="7dp"
+            android:text="Test Button"
+            android:textSize="25dp"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/test_et"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="7dp"
+            android:hint="Test EditText"
+            android:textSize="25dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/test_heart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="TextView\n Full Ripple"
+            android:background="@drawable/lufi"
+            android:textSize="30dp"
+            android:textColor="#0000ff"
+            android:gravity="center"/>
+    </LinearLayout>
+
+</LinearLayout>
