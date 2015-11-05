@@ -1,11 +1,11 @@
 package com.desmond.ripple;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
@@ -22,7 +22,7 @@ public class RippleCompat {
     private static InputMethodManager imm = null;
     private static Context sContext = null;
 
-    public static void init(Context context){
+    public static void init(Context context) {
         imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         sContext = context;
     }
@@ -34,7 +34,7 @@ public class RippleCompat {
     /**
      * set ripple with ripple color.
      *
-     * @param v view to set
+     * @param v           view to set
      * @param rippleColor ripple color
      */
     public static void apply(View v, int rippleColor) {
@@ -95,18 +95,24 @@ public class RippleCompat {
         if (onFinishListener != null) {
             drawable.addOnFinishListener(onFinishListener);
         }
-        v.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                drawable.finishRipple();
-            }
-        });
+        handleAttach(v, drawable);
         measure(drawable, v);
         adaptBackground(drawable, v, config);
+    }
+
+    private static void handleAttach(final View v, final RippleCompatDrawable drawable){
+        if(Build.VERSION.SDK_INT >= 12){
+            v.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(View v) {
+                }
+
+                @Override
+                public void onViewDetachedFromWindow(View v) {
+                    drawable.finishRipple();
+                }
+            });
+        }
     }
 
     private static void adaptBackground(RippleCompatDrawable rippleDrawable, View v, RippleConfig config) {
@@ -142,32 +148,32 @@ public class RippleCompat {
     /**
      * Set palette mode of the ripple.
      *
-     * @param v view
+     * @param v           view
      * @param paletteMode palette mode. {@link com.desmond.ripple.RippleUtil.PaletteMode}
      */
-    public static void setPaletteMode(View v, RippleUtil.PaletteMode paletteMode){
+    public static void setPaletteMode(View v, RippleUtil.PaletteMode paletteMode) {
         Drawable drawable = v.getBackground();
-        if(drawable instanceof RippleCompatDrawable){
+        if (drawable instanceof RippleCompatDrawable) {
             ((RippleCompatDrawable) drawable).setPaletteMode(paletteMode);
-        }else if(drawable instanceof LayerDrawable
-                && ((LayerDrawable)drawable).getDrawable(1) instanceof RippleCompatDrawable){
-            ((RippleCompatDrawable) ((LayerDrawable)drawable).getDrawable(1)).setPaletteMode(paletteMode);
+        } else if (drawable instanceof LayerDrawable
+                && ((LayerDrawable) drawable).getDrawable(1) instanceof RippleCompatDrawable) {
+            ((RippleCompatDrawable) ((LayerDrawable) drawable).getDrawable(1)).setPaletteMode(paletteMode);
         }
     }
 
     /**
      * Set scaleType of the ripple drawable background.
      *
-     * @param v view
+     * @param v         view
      * @param scaleType ScaleType of an image, {@link android.widget.ImageView.ScaleType}
      */
     public static void setScaleType(View v, ImageView.ScaleType scaleType) {
         Drawable drawable = v.getBackground();
-        if(drawable instanceof RippleCompatDrawable){
+        if (drawable instanceof RippleCompatDrawable) {
             ((RippleCompatDrawable) drawable).setScaleType(scaleType);
-        }else if(drawable instanceof LayerDrawable
-                && ((LayerDrawable)drawable).getDrawable(1) instanceof RippleCompatDrawable){
-            ((RippleCompatDrawable) ((LayerDrawable)drawable).getDrawable(1)).setScaleType(scaleType);
+        } else if (drawable instanceof LayerDrawable
+                && ((LayerDrawable) drawable).getDrawable(1) instanceof RippleCompatDrawable) {
+            ((RippleCompatDrawable) ((LayerDrawable) drawable).getDrawable(1)).setScaleType(scaleType);
         }
         v.invalidate();
     }
@@ -197,11 +203,11 @@ public class RippleCompat {
                 isAppCompatStyle ? RippleUtil.BTN_INSET_VERTICAL_APPCOMPAT : RippleUtil.BTN_INSET_VERTICAL);
     }
 
-    private static void fitEditText(final RippleCompatDrawable drawable, boolean isAppCompatStyle){
-        drawable.setPadding(isAppCompatStyle ? RippleUtil.ET_INSET_HORIZONTAL_APPCOMPAT:RippleUtil.ET_INSET,
-                isAppCompatStyle ? RippleUtil.ET_INSET_TOP_APPCOMPAT:RippleUtil.ET_INSET,
-                isAppCompatStyle ? RippleUtil.ET_INSET_HORIZONTAL_APPCOMPAT:RippleUtil.ET_INSET,
-                isAppCompatStyle ? RippleUtil.ET_INSET_BOTTOM_APPCOMPAT:RippleUtil.ET_INSET);
+    private static void fitEditText(final RippleCompatDrawable drawable, boolean isAppCompatStyle) {
+        drawable.setPadding(isAppCompatStyle ? RippleUtil.ET_INSET_HORIZONTAL_APPCOMPAT : RippleUtil.ET_INSET,
+                isAppCompatStyle ? RippleUtil.ET_INSET_TOP_APPCOMPAT : RippleUtil.ET_INSET,
+                isAppCompatStyle ? RippleUtil.ET_INSET_HORIZONTAL_APPCOMPAT : RippleUtil.ET_INSET,
+                isAppCompatStyle ? RippleUtil.ET_INSET_BOTTOM_APPCOMPAT : RippleUtil.ET_INSET);
     }
 
     private static class ForwardingTouchListener implements View.OnTouchListener {
@@ -235,9 +241,9 @@ public class RippleCompat {
 
         private boolean isInBound(float x, float y) {
             Rect bound;
-            if(drawable.getBackgroundDrawable() == null || drawable.getBackgroundDrawable() instanceof ColorDrawable){
+            if (drawable.getBackgroundDrawable() == null || drawable.getBackgroundDrawable() instanceof ColorDrawable) {
                 bound = drawable.getClipBound();
-            }else{
+            } else {
                 bound = drawable.getDrawableBound();
             }
             return x >= bound.left && x <= bound.right && y >= bound.top && y <= bound.bottom;

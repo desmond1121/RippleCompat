@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/desmond1121/RippleCompat'
     gitUrl = 'https://github.com/desmond1121/RippleCompat.git'
 
-    libraryVersion = '0.3.1'
+    libraryVersion = '0.4.0'
 
     developerId = 'desmond'
     developerName = 'Desmond Yao'
@@ -29,7 +29,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 7
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"

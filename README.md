@@ -22,6 +22,10 @@ Demo of palette:
 
 ![Palette](/demo/Demo1.gif)
 
+Demo in Android 2.1: (GenyMotion android keyboard would not triggered normally, if you know how to do this please tell me :)
+
+![2.1](/demo/DemoIn2_1.gif)
+
 ##Strength
 
 - Support ripple with view's origin background, or you can set a background image with `scaleType`!
@@ -34,15 +38,8 @@ Demo of palette:
 
 Add dependency in module:
 
-    compile 'com.github.desmond1121:ripplecompat:0.3.1'
-
-maven:
-
-    <groupId>com.github.desmond1121</groupId>
-    <artifactId>ripplecompat</artifactId>
-    <version>0.3.1</version>
-    <packaging>aar</packaging>
-    <name>ripplecompat</name>
+    compile 'com.github.desmond1121:ripplecompat:0.4.0'
+    
 ##More Customization
 
     RippleConfig config = new RippleConfig();

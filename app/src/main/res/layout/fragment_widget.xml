@@ -16,7 +16,7 @@
             android:layout_marginTop="7dp"
             android:text="Test TextView"
             android:textSize="25dp"
-            android:background="@android:color/holo_green_dark"
+            android:background="#007f00"
             android:gravity="center"/>
         <Button
             android:id="@+id/test_button"
