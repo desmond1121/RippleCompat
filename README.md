@@ -20,7 +20,7 @@ Demo of simple use:
 
 Demo in Android 2.1: (GenyMotion android keyboard would not triggered normally, if you know how to do this please tell me :)
 
-![2.1](/demo/demo_in_android_2_1.gif)
+![2.1](/demo/demo_android_2_1.gif)
 
 ##Strength
 
