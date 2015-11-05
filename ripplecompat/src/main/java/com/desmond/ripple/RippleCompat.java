@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -166,17 +167,10 @@ public class RippleCompat {
     }
 
     private static void measure(final RippleCompatDrawable drawable, final View v) {
-        if (v instanceof AppCompatButton) {
-            drawable.setPadding(RippleUtil.MATERIAL_BTN_INSET_HORIZONTAL,
-                    RippleUtil.MATERIAL_BTN_INSET_VERTICAL,
-                    RippleUtil.MATERIAL_BTN_INSET_HORIZONTAL,
-                    RippleUtil.MATERIAL_BTN_INSET_VERTICAL);
-        } else if (v instanceof AppCompatEditText) {
-            drawable.setPadding(
-                    RippleUtil.MATERIAL_ET_INSET_HORIZONTAL,
-                    RippleUtil.MATERIAL_ET_INSET_TOP,
-                    RippleUtil.MATERIAL_ET_INSET_HORIZONTAL,
-                    RippleUtil.MATERIAL_ET_INSET_BOTTOM + 1.5f);
+        if (v instanceof Button) {
+            fitButton(drawable, v instanceof AppCompatButton);
+        } else if (v instanceof EditText) {
+            fitEditText(drawable, v instanceof AppCompatEditText);
         }
         v.setFocusableInTouchMode(true);
         v.setOnTouchListener(new ForwardingTouchListener(drawable, v));
@@ -188,6 +182,20 @@ public class RippleCompat {
                 if (drawable.isFull()) drawable.setMaxRippleRadius(radius);
             }
         });
+    }
+
+    private static void fitButton(final RippleCompatDrawable drawable, boolean isAppCompatStyle) {
+        drawable.setPadding(RippleUtil.BTN_INSET_HORIZONTAL,
+                isAppCompatStyle ? RippleUtil.BTN_INSET_VERTICAL_APPCOMPAT : RippleUtil.BTN_INSET_VERTICAL,
+                RippleUtil.BTN_INSET_HORIZONTAL,
+                isAppCompatStyle ? RippleUtil.BTN_INSET_VERTICAL_APPCOMPAT : RippleUtil.BTN_INSET_VERTICAL);
+    }
+
+    private static void fitEditText(final RippleCompatDrawable drawable, boolean isAppCompatStyle){
+        drawable.setPadding(isAppCompatStyle ? RippleUtil.ET_INSET_HORIZONTAL_APPCOMPAT:RippleUtil.ET_INSET,
+                isAppCompatStyle ? RippleUtil.ET_INSET_TOP_APPCOMPAT:RippleUtil.ET_INSET,
+                isAppCompatStyle ? RippleUtil.ET_INSET_HORIZONTAL_APPCOMPAT:RippleUtil.ET_INSET,
+                isAppCompatStyle ? RippleUtil.ET_INSET_BOTTOM_APPCOMPAT:RippleUtil.ET_INSET);
     }
 
     private static class ForwardingTouchListener implements View.OnTouchListener {

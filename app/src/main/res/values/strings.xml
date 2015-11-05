@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">RippleLab</string>
+    <string name="app_name_appcompat">RippleLab Demo - AppCompat</string>
+    <string name="app_name_normal">RippleLab Demo - No AppCompat</string>
     <string-array name="scale_types">
         <item>FIT_CENTER</item>
         <item>FIT_XY</item>

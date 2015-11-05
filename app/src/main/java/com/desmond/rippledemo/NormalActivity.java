@@ -1,47 +1,70 @@
 package com.desmond.rippledemo;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 
 import com.desmond.ripple.RippleCompat;
-import com.desmond.ripple.RippleConfig;
+import com.desmond.rippledemo.fragments.PaletteFragment;
+import com.desmond.rippledemo.fragments.ScaleTypeFragment;
+import com.desmond.rippledemo.fragments.WidgetTestFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jiayi Yao on 2015/11/5.
  */
-public class NormalActivity extends Activity{
-    private int[] color = new int[]{
-            0x44ff0000,
-            0x4400ff00,
-            0x440000ff,
-            0x4400ffff
-    };
-
+public class NormalActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_widget);
+        setContentView(R.layout.activity_normal);
         RippleCompat.init(this);
-        TextView tv = (TextView) findViewById(R.id.test_textView);
-        RippleCompat.apply(tv, color[0]);
 
-        Button btn = (Button) findViewById(R.id.test_button);
-        RippleCompat.apply(btn, color[1]);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(getAdapter());
+    }
 
-        EditText et = (EditText) findViewById(R.id.test_et);
-        RippleCompat.apply(et, color[2]);
+    private ViewPagerAdapter getAdapter() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new WidgetTestFragment(), "Widget");
+        adapter.addFragment(new ScaleTypeFragment(), "ScaleType");
+        adapter.addFragment(new PaletteFragment(), "Palette");
+        return adapter;
+    }
 
-        final View iv = findViewById(R.id.test_heart);
-        RippleConfig config = new RippleConfig();
-        config.setRippleColor(color[3]);
-        config.setIsFull(true);
-        config.setBackgroundDrawable(getResources().getDrawable(R.drawable.lufi));
-        config.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        RippleCompat.apply(iv, config);
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragments = new ArrayList<>();
+        private final List<String> mFragmentTitles = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragments.add(fragment);
+            mFragmentTitles.add(title);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitles.get(position);
+        }
     }
 }

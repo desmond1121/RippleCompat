@@ -17,7 +17,10 @@ import com.desmond.rippledemo.fragments.WidgetTestFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Demo for appcompat style.
+ */
+public class CompatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

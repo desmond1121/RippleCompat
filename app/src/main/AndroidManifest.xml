@@ -7,18 +7,19 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
-        <activity android:name=".MainActivity"
+        <activity android:name=".CompatActivity"
+                  android:label="@string/app_name_appcompat"
                   android:theme="@style/AppCompatTheme">
-
-        </activity>
-
-        <activity android:name=".NormalActivity"
-            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".NormalActivity"
+                  android:label="@string/app_name_normal"
+                android:theme="@style/AppTheme">
         </activity>
     </application>
 

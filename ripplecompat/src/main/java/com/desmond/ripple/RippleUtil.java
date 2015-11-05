@@ -25,12 +25,14 @@ public class RippleUtil {
     public static final int FADE_DURATION = 400;
     public static final int RIPPLE_COLOR = 0xa000ff00;
 
-    public static final int MATERIAL_ET_INSET_TOP = 10;
-    public static final int MATERIAL_ET_INSET_BOTTOM = 7;
-    public static final int MATERIAL_ET_INSET_HORIZONTAL = 4;
+    public static final int ET_INSET_TOP_APPCOMPAT = 10;
+    public static final int ET_INSET_BOTTOM_APPCOMPAT = 6;
+    public static final int ET_INSET_HORIZONTAL_APPCOMPAT = 4;
+    public static final int ET_INSET = 4;
 
-    public static final int MATERIAL_BTN_INSET_VERTICAL = 6;
-    public static final int MATERIAL_BTN_INSET_HORIZONTAL = 4;
+    public static final int BTN_INSET_HORIZONTAL = 4;
+    public static final int BTN_INSET_VERTICAL = 5;
+    public static final int BTN_INSET_VERTICAL_APPCOMPAT = 6;
 
     public static final int ANCHOR_START = 1;
     public static final int ANCHOR_END = -1;

@@ -64,7 +64,6 @@ Add dependency in module:
 
 - Applying in `ImageView` or setting background would disable the ripple background color.
 - It would disable the `OnTouchListener` of the set view. (click listener would be triggered as normal)
-- Some widget (Button, EditText, etc. ) only perform correctly in **AppCompat style widget**. 
 
 ##Dependency
 
