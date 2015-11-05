@@ -27,7 +27,6 @@ Demo of palette:
 - Support `ImageView`, `TextView`, `Button`, `EditText`. Especially, `android:scaleType` of `ImageView` also works! 
 - You can choose these type of ripple: Circle, Heart, Triangle;
 - Spinning ripple;
-- You can choose ripple full of view or not;
 - STILL EXPERIMENTING MORE.
 
 ##Dependency
