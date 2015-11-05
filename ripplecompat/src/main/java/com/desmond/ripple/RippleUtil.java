@@ -85,10 +85,22 @@ public class RippleUtil {
         int g = (rippleColor & 0xff00) >> 8;
         int b = rippleColor & 0xff;
 
-        r = r < 128 ? r + RIPPLE_BACKGROUND_OFFSET : r - RIPPLE_BACKGROUND_OFFSET;
-        g = g < 128 ? g + RIPPLE_BACKGROUND_OFFSET : g - RIPPLE_BACKGROUND_OFFSET;
-        b = b < 128 ? b + RIPPLE_BACKGROUND_OFFSET : b - RIPPLE_BACKGROUND_OFFSET;
+        r = makeOffset(r);
+        g = makeOffset(g);
+        b = makeOffset(b);
+
         return Color.argb(a, r, g, b);
+    }
+
+    public static int makeOffset(int value){
+        int dest = value < 128 ? value + RIPPLE_BACKGROUND_OFFSET : value - RIPPLE_BACKGROUND_OFFSET;
+        if(dest < 0){
+            return  0;
+        }else if(dest > 255){
+            return 255;
+        }else{
+            return dest;
+        }
     }
 
     /**
