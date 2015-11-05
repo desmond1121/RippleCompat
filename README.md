@@ -34,7 +34,7 @@ Demo of palette:
 
 Add dependency in module:
 
-    compile 'com.github.desmond1121:ripplecompat:1.2.0'
+    compile 'com.github.desmond1121:ripplecompat:1.2.1'
 
 ##More Customization
 
