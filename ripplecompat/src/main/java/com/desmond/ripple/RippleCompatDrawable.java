@@ -79,7 +79,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
             updateRipple(mSpeed);
             if (isWaving || isPressed) {
                 mHandler.postDelayed(this, RippleUtil.FRAME_INTERVAL);
-            } else if(!mFadeAnimator.isStarted()){
+            } else if(mFadeAnimator != null && !mFadeAnimator.isStarted()){
                 startFadeAnimation();
             }
         }
@@ -169,6 +169,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
             mScale = (mMaxRippleRadius - RippleUtil.MIN_RIPPLE_RADIUS) / RippleUtil.MIN_RIPPLE_RADIUS + 1f;
         }
         if(lastX == x && lastY == y && lastScale == mScale) return;
+
         lastX = x;
         lastY = y;
         lastScale = mScale;

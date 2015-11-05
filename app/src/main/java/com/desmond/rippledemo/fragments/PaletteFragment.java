@@ -21,7 +21,6 @@ import com.desmond.rippledemo.R;
  * Created by Jiayi Yao on 2015/11/3.
  */
 public class PaletteFragment extends Fragment{
-    private static final String TAG = "ScaleTypeFragment";
     RippleUtil.PaletteMode[] paletteModes = new RippleUtil.PaletteMode[]{
             RippleUtil.PaletteMode.VIBRANT,
             RippleUtil.PaletteMode.VIBRANT_LIGHT,

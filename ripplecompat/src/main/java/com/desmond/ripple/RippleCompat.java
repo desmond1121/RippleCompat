@@ -18,16 +18,10 @@ public class RippleCompat {
     private static final String TAG = "RippleCompat";
     private static InputMethodManager imm = null;
     private static Context sContext = null;
-    private static boolean isEnablePalette = false;
 
     public static void init(Context context){
-        init(context, false);
-    }
-
-    public static void init(Context context, boolean isEnablePalette) {
         imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         sContext = context;
-        RippleCompat.isEnablePalette = isEnablePalette;
     }
 
     public static void apply(View v) {
@@ -229,9 +223,5 @@ public class RippleCompat {
             Rect rect = drawable.getBackgroundDrawable() == null ? drawable.getClipBound() : drawable.getDrawableBound();
             return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
         }
-    }
-
-    public static boolean isEnablePalette() {
-        return isEnablePalette;
     }
 }

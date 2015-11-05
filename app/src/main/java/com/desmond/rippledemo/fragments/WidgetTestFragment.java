@@ -21,7 +21,6 @@ import com.desmond.rippledemo.R;
  * Created by Jiayi Yao on 2015/11/4.
  */
 public class WidgetTestFragment extends Fragment implements View.OnClickListener{
-    private static final String TAG = "WidgetTestFragment";
     private int[] color = new int[]{
             0x44ff0000,
             0x4400ff00,

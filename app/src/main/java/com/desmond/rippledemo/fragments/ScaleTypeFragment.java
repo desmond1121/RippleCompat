@@ -20,7 +20,6 @@ import com.desmond.rippledemo.R;
  * Created by Jiayi Yao on 2015/11/3.
  */
 public class ScaleTypeFragment extends Fragment{
-    private static final String TAG = "ScaleTypeFragment";
     ImageView.ScaleType[] types = new ImageView.ScaleType[]{
             ImageView.ScaleType.FIT_CENTER,
             ImageView.ScaleType.FIT_XY,
