@@ -23,7 +23,7 @@ Demo of palette:
 ##Strength
 
 - Support ripple with view's origin background, or you can set a background image with `scaleType`!
-- Auto palette ripple color with the background image!
+- Auto PALETTE ripple color with the background image!
 - Support `ImageView`, `TextView`, `Button`, `EditText`. Especially, `android:scaleType` of `ImageView` also works! 
 - You can choose these type of ripple: Circle, Heart, Triangle;
 - Spinning ripple;
@@ -47,7 +47,8 @@ Add dependency in module:
     config.setType(RippleCompatDrawable.Type.HEART); /* set ripple shape type , default is CIRCLE*/
     config.setBackgroundDrawable(drawable); /* set background drawable, it would disable the origin background */
     config.setScaleType(ImageView.ScaleType.FIT_CENTER); /* set scaleType of the set drawable, default is FIT_CENTER */
-    config.setPaletteMode(RippleUtil.PALETTE_VIBRANT_LIGHT); /* set palette mode (1-16) */
+    config.setIsEnablePalette(true); /* enable palette */
+    config.setPaletteMode(RippleUtil.PaletteMode.VIBRANT); /* set palette mode (1-16) */
     config.setIsSpin(isSpin); /* set spin ripple */
     config.setIsFull(isFull); /* if ripple full of view, invoking this method would override the change by setMaxRippleRadius */
     
@@ -67,8 +68,8 @@ Add dependency in module:
 
 ##Dependency
 
-- 'com.android.support:appcompat-v7:22.2.1'
-- 'com.android.support:palette-v7:22.2.1'
+- `com.android.support:appcompat-v7:22.2.1`
+- `com.android.support:palette-v7:22.2.1`
 
 ##LICENSE
     
