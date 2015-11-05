@@ -14,17 +14,13 @@ Not need to modify layout file! Add a simple line of code would make your view R
 
 ##Demo
 
-Demo of simple use and background with scaleType:
+Demo of simple use:
 
-![Demo](/demo/Demo.gif)
-
-Demo of palette:
-
-![Palette](/demo/Demo1.gif)
+![Demo](/demo/demo.gif)
 
 Demo in Android 2.1: (GenyMotion android keyboard would not triggered normally, if you know how to do this please tell me :)
 
-![2.1](/demo/DemoIn2_1.gif)
+![2.1](/demo/demo_in_android_2_1.gif)
 
 ##Strength
 
@@ -38,7 +34,7 @@ Demo in Android 2.1: (GenyMotion android keyboard would not triggered normally, 
 
 Add dependency in module:
 
-    compile 'com.github.desmond1121:ripplecompat:0.4.0'
+    compile 'com.github.desmond1121:ripplecompat:0.4.1'
     
 ##More Customization
 

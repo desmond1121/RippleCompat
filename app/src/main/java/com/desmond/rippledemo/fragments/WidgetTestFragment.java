@@ -57,8 +57,6 @@ public class WidgetTestFragment extends Fragment implements View.OnClickListener
         RippleConfig config = new RippleConfig();
         config.setRippleColor(color[3]);
         config.setIsFull(true);
-        config.setBackgroundDrawable(new ColorDrawable(RippleUtil.alphaColor(Color.GREEN, 128)));
-        config.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         RippleCompat.apply(iv, config);
     }
 

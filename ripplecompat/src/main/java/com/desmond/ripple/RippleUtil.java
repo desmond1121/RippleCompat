@@ -3,6 +3,7 @@ package com.desmond.ripple;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -23,6 +24,7 @@ public class RippleUtil {
     public static final int MIN_RIPPLE_RADIUS = dip2px(30);
     public static final int RIPPLE_DURATION = 400;
     public static final int RIPPLE_COLOR = 0xa000ff00;
+    public static final int RIPPLE_BACKGROUND_OFFSET = 56;
 
     public static final int ET_INSET_TOP_APPCOMPAT = 10;
     public static final int ET_INSET_BOTTOM_APPCOMPAT = 6;
@@ -74,7 +76,19 @@ public class RippleUtil {
     }
 
     public static int alphaColor(int color, int alpha){
-        return (alpha << 24) | 0x00ffffff & color;
+        return (alpha << 24) | 0xffffff & color;
+    }
+
+    public static int produceBackgroundColor(int rippleColor){
+        int a = (rippleColor & 0xff000000) >> 24;
+        int r = (rippleColor & 0xff0000) >> 16;
+        int g = (rippleColor & 0xff00) >> 8;
+        int b = rippleColor & 0xff;
+
+        r = r < 128 ? r + RIPPLE_BACKGROUND_OFFSET : r - RIPPLE_BACKGROUND_OFFSET;
+        g = g < 128 ? g + RIPPLE_BACKGROUND_OFFSET : g - RIPPLE_BACKGROUND_OFFSET;
+        b = b < 128 ? b + RIPPLE_BACKGROUND_OFFSET : b - RIPPLE_BACKGROUND_OFFSET;
+        return Color.argb(a, r, g, b);
     }
 
     /**

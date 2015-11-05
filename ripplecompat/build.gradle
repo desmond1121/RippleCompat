@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/desmond1121/RippleCompat'
     gitUrl = 'https://github.com/desmond1121/RippleCompat.git'
 
-    libraryVersion = '0.4.0'
+    libraryVersion = '0.4.1'
 
     developerId = 'desmond'
     developerName = 'Desmond Yao'
