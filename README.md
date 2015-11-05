@@ -2,14 +2,16 @@
 
 ##Easy To Use!
 
-Init library in your `Activity`:
-        
+You should library in your `Activity`(You should add this code, otherwise some problem would happen. Like `EditText` would not trigger input keyboard.):
+
     RippleCompat.init(context);
 
-Add a simple line of code for view or widget you want to ripple:
+Not need to modify layout file! Add a simple line of code would make your view RIPPLE:
 
-    RippleCompat.apply(something, rippleColor);
-    
+    RippleCompat.apply(view, rippleColor);
+
+>hint: widgets like `Button`, `EditText`... are instance of `View` too, using `apply(view, rippleColor)` to them would work.
+
 ##Demo
 
 Demo of simple use and background with scaleType:
@@ -34,6 +36,13 @@ Add dependency in module:
 
     compile 'com.github.desmond1121:ripplecompat:0.3.1'
 
+maven:
+
+    <groupId>com.github.desmond1121</groupId>
+    <artifactId>ripplecompat</artifactId>
+    <version>0.3.1</version>
+    <packaging>aar</packaging>
+    <name>ripplecompat</name>
 ##More Customization
 
     RippleConfig config = new RippleConfig();
