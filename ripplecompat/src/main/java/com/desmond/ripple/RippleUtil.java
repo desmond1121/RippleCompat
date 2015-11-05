@@ -22,7 +22,6 @@ public class RippleUtil {
     public static final int MAX_RIPPLE_RADIUS = dip2px(200);
     public static final int MIN_RIPPLE_RADIUS = dip2px(30);
     public static final int RIPPLE_DURATION = 400;
-    public static final int FADE_DURATION = 400;
     public static final int RIPPLE_COLOR = 0xa000ff00;
 
     public static final int ET_INSET_TOP_APPCOMPAT = 10;

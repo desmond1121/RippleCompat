@@ -8,6 +8,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -116,7 +117,11 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
 
         if(mBackgroundDrawable == null){
             canvas.clipRect(mClipBound);
-        }else{
+        }else if(mBackgroundDrawable instanceof ColorDrawable){
+            canvas.clipRect(mClipBound);
+            mBackgroundDrawable.setBounds(mClipBound);
+            mBackgroundDrawable.draw(canvas);
+        }else {
             if(mDrawableBound == null) {
                 mDrawableBound = RippleUtil.getBound(mScaleType, new Rect(0, 0, mWidth, mHeight),
                         mBackgroundDrawable.getIntrinsicWidth(), mBackgroundDrawable.getIntrinsicHeight());

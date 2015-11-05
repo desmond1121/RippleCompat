@@ -1,5 +1,7 @@
 package com.desmond.rippledemo.fragments;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import com.desmond.ripple.RippleCompat;
 import com.desmond.ripple.RippleCompatDrawable;
 import com.desmond.ripple.RippleConfig;
+import com.desmond.ripple.RippleUtil;
 import com.desmond.rippledemo.R;
 
 /**
@@ -22,10 +25,10 @@ import com.desmond.rippledemo.R;
  */
 public class WidgetTestFragment extends Fragment implements View.OnClickListener{
     private int[] color = new int[]{
-            0x44ff0000,
-            0x4400ff00,
-            0x440000ff,
-            0x4400ffff
+            0x70ff0000,
+            0x7000ff00,
+            0x700000ff,
+            0x70ff00ff
     };
 
     private ViewGroup mLayout;
@@ -54,7 +57,7 @@ public class WidgetTestFragment extends Fragment implements View.OnClickListener
         RippleConfig config = new RippleConfig();
         config.setRippleColor(color[3]);
         config.setIsFull(true);
-        config.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.lufi));
+        config.setBackgroundDrawable(new ColorDrawable(RippleUtil.alphaColor(Color.GREEN, 128)));
         config.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         RippleCompat.apply(iv, config);
     }

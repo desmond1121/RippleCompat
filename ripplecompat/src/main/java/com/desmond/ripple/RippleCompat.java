@@ -1,7 +1,9 @@
 package com.desmond.ripple;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v7.widget.AppCompatButton;
@@ -32,8 +34,8 @@ public class RippleCompat {
     /**
      * set ripple with ripple color.
      *
-     * @param v
-     * @param rippleColor
+     * @param v view to set
+     * @param rippleColor ripple color
      */
     public static void apply(View v, int rippleColor) {
         RippleConfig config = new RippleConfig();
@@ -63,7 +65,7 @@ public class RippleCompat {
      * @param rippleColor ripple color.
      * @param v           view to set.
      * @param resId       resourceId of background.
-     * @param scaleType   scaleType.
+     * @param scaleType   scaleType, {@link android.widget.ImageView.ScaleType}.
      */
     public static void apply(View v, int rippleColor, int resId, ImageView.ScaleType scaleType) {
         RippleConfig config = new RippleConfig();
@@ -107,14 +109,6 @@ public class RippleCompat {
         adaptBackground(drawable, v, config);
     }
 
-    /**
-     * Set ripple background. If set a image background, the background of the view and background color of ripple
-     * would be ignored!
-     *
-     * @param rippleDrawable
-     * @param v
-     * @param config
-     */
     private static void adaptBackground(RippleCompatDrawable rippleDrawable, View v, RippleConfig config) {
         Drawable background;
 
@@ -145,6 +139,12 @@ public class RippleCompat {
         }
     }
 
+    /**
+     * Set palette mode of the ripple.
+     *
+     * @param v view
+     * @param paletteMode palette mode. {@link com.desmond.ripple.RippleUtil.PaletteMode}
+     */
     public static void setPaletteMode(View v, RippleUtil.PaletteMode paletteMode){
         Drawable drawable = v.getBackground();
         if(drawable instanceof RippleCompatDrawable){
@@ -155,6 +155,12 @@ public class RippleCompat {
         }
     }
 
+    /**
+     * Set scaleType of the ripple drawable background.
+     *
+     * @param v view
+     * @param scaleType ScaleType of an image, {@link android.widget.ImageView.ScaleType}
+     */
     public static void setScaleType(View v, ImageView.ScaleType scaleType) {
         Drawable drawable = v.getBackground();
         if(drawable instanceof RippleCompatDrawable){
@@ -228,8 +234,13 @@ public class RippleCompat {
         }
 
         private boolean isInBound(float x, float y) {
-            Rect rect = drawable.getBackgroundDrawable() == null ? drawable.getClipBound() : drawable.getDrawableBound();
-            return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+            Rect bound;
+            if(drawable.getBackgroundDrawable() == null || drawable.getBackgroundDrawable() instanceof ColorDrawable){
+                bound = drawable.getClipBound();
+            }else{
+                bound = drawable.getDrawableBound();
+            }
+            return x >= bound.left && x <= bound.right && y >= bound.top && y <= bound.bottom;
         }
     }
 }
