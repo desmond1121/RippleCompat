@@ -34,13 +34,16 @@ public class RippleUtil {
 
     public static final int ANCHOR_START = 1;
     public static final int ANCHOR_END = -1;
-    
-    public static final int PALETTE_VIBRANT = 0;
-    public static final int PALETTE_VIBRANT_LIGHT = 1;
-    public static final int PALETTE_VIBRANT_DARK = 2;
-    public static final int PALETTE_MUTED = 3;
-    public static final int PALETTE_MUTED_LIGHT = 4;
-    public static final int PALETTE_MUTED_DARK = 5;
+
+    public enum PaletteMode{
+        DISABLED,
+        VIBRANT,
+        VIBRANT_LIGHT,
+        VIBRANT_DARK,
+        MUTED,
+        MUTED_LIGHT,
+        MUTED_DARK
+    }
 
     public static int px2dip(int pxValue) {
         final float scale = Resources.getSystem().getDisplayMetrics().density;
@@ -73,10 +76,6 @@ public class RippleUtil {
         return (alpha << 24) | 0x00ffffff & color;
     }
 
-    public static void palette(final RippleCompatDrawable compatDrawable, final Drawable background){
-        palette(compatDrawable, background, PALETTE_VIBRANT_LIGHT);
-    }
-
     /**
      * set ripple color with palette of image.
      *
@@ -84,19 +83,38 @@ public class RippleUtil {
      * @param background image for palette
      * @param mode palette mode.
      */
-    public static void palette(final RippleCompatDrawable compatDrawable, final Drawable background, final int mode){
-        if(!RippleCompat.isEnablePalette()
-                || background.getIntrinsicWidth() <= 0
+    public static void palette(final RippleCompatDrawable compatDrawable, final Drawable background,
+                               final PaletteMode mode){
+        if(mode == PaletteMode.DISABLED || background.getIntrinsicWidth() <= 0
                 || background.getIntrinsicHeight() <= 0)return;
         Palette.Builder builder = Palette.from(drawable2Bitmap(background));
         builder.generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
-                int color = palette.getSwatches().get(mode).getBodyTextColor();
-                Log.i(TAG, "RippleUtil->onGenerated --info log-- " + Integer.toHexString(color));
+                int color = getPaletteColor(palette, mode);
                 compatDrawable.setRippleColor(alphaColor(color, 128));
             }
         });
+    }
+
+    public static int getPaletteColor(Palette palette, PaletteMode mode){
+        switch (mode){
+            case VIBRANT:
+                return palette.getVibrantColor(RIPPLE_COLOR);
+            case VIBRANT_LIGHT:
+                return palette.getLightVibrantColor(RIPPLE_COLOR);
+            case VIBRANT_DARK:
+                return palette.getDarkVibrantColor(RIPPLE_COLOR);
+            case MUTED:
+                return palette.getMutedColor(RIPPLE_COLOR);
+            case MUTED_LIGHT:
+                return palette.getLightMutedColor(RIPPLE_COLOR);
+            case MUTED_DARK:
+                return palette.getDarkVibrantColor(RIPPLE_COLOR);
+            case DISABLED:
+            default:
+                return 0;
+        }
     }
 
     public static Bitmap drawable2Bitmap(final Drawable drawable){

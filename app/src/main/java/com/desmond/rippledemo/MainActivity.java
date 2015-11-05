@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.desmond.ripple.RippleCompat;
+import com.desmond.rippledemo.fragments.PaletteFragment;
 import com.desmond.rippledemo.fragments.ScaleTypeFragment;
 import com.desmond.rippledemo.fragments.WidgetTestFragment;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new WidgetTestFragment(), "Widget");
         adapter.addFragment(new ScaleTypeFragment(), "ScaleType");
+        adapter.addFragment(new PaletteFragment(), "Palette");
         return adapter;
     }
 

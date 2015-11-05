@@ -43,7 +43,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
     private Interpolator mInterpolator;
     private ValueAnimator mFadeAnimator;
     private Drawable mBackgroundDrawable;
-    private int mPaletteMode = RippleUtil.PALETTE_VIBRANT_LIGHT;
+    private RippleUtil.PaletteMode mPaletteMode;
     private ImageView.ScaleType mScaleType = ImageView.ScaleType.FIT_CENTER;
     private int mWidth = 0;
     private int mHeight = 0;
@@ -93,7 +93,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
 
     private RippleCompatDrawable(int rippleColor, int maxRippleRadius,
                                  int rippleDuration, Interpolator interpolator, int fadeDuration,
-                                 boolean isFull, Path path, boolean isSpin, int paletteMode) {
+                                 boolean isFull, Path path, boolean isSpin, RippleUtil.PaletteMode paletteMode) {
         mRippleColor = rippleColor;
         mMaxRippleRadius = maxRippleRadius;
         mRippleDuration = rippleDuration;
@@ -270,7 +270,7 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         setClipBound();
     }
 
-    public void setMaxRippleRadius(int maxRippleRadius){
+    protected void setMaxRippleRadius(int maxRippleRadius){
         mMaxRippleRadius = maxRippleRadius;
     }
 
@@ -278,13 +278,18 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         return isFull;
     }
 
-    public void setBackgroundDrawable(Drawable backgroundDrawable) {
+    protected void setBackgroundDrawable(Drawable backgroundDrawable) {
         mBackgroundDrawable = backgroundDrawable;
         RippleUtil.palette(this, backgroundDrawable, mPaletteMode);
         mDrawableBound = null;
     }
 
-    public void setScaleType(ImageView.ScaleType scaleType) {
+    protected void setPaletteMode(RippleUtil.PaletteMode paletteMode) {
+        mPaletteMode = paletteMode;
+        RippleUtil.palette(this, mBackgroundDrawable, mPaletteMode);
+    }
+
+    protected void setScaleType(ImageView.ScaleType scaleType) {
         mScaleType = scaleType;
         mDrawableBound = null;
     }
@@ -308,15 +313,15 @@ public class RippleCompatDrawable extends Drawable implements View.OnTouchListen
         }
     }
 
-    public Rect getDrawableBound() {
+    protected Rect getDrawableBound() {
         return mDrawableBound;
     }
 
-    public Rect getClipBound() {
+    protected Rect getClipBound() {
         return mClipBound;
     }
 
-    public Drawable getBackgroundDrawable() {
+    protected Drawable getBackgroundDrawable() {
         return mBackgroundDrawable;
     }
 }

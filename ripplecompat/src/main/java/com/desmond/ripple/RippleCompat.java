@@ -150,14 +150,25 @@ public class RippleCompat {
         }
     }
 
-
-
-    public static void setScaleType(ImageView iv, ImageView.ScaleType scaleType) {
-        if (iv.getBackground() instanceof RippleCompatDrawable) {
-            RippleCompatDrawable drawable = (RippleCompatDrawable) iv.getBackground();
-            drawable.setScaleType(scaleType);
-            drawable.invalidateSelf();
+    public static void setPaletteMode(View v, RippleUtil.PaletteMode paletteMode){
+        Drawable drawable = v.getBackground();
+        if(drawable instanceof RippleCompatDrawable){
+            ((RippleCompatDrawable) drawable).setPaletteMode(paletteMode);
+        }else if(drawable instanceof LayerDrawable
+                && ((LayerDrawable)drawable).getDrawable(1) instanceof RippleCompatDrawable){
+            ((RippleCompatDrawable) ((LayerDrawable)drawable).getDrawable(1)).setPaletteMode(paletteMode);
         }
+    }
+
+    public static void setScaleType(View v, ImageView.ScaleType scaleType) {
+        Drawable drawable = v.getBackground();
+        if(drawable instanceof RippleCompatDrawable){
+            ((RippleCompatDrawable) drawable).setScaleType(scaleType);
+        }else if(drawable instanceof LayerDrawable
+                && ((LayerDrawable)drawable).getDrawable(1) instanceof RippleCompatDrawable){
+            ((RippleCompatDrawable) ((LayerDrawable)drawable).getDrawable(1)).setScaleType(scaleType);
+        }
+        v.invalidate();
     }
 
     private static void measure(final RippleCompatDrawable drawable, final View v) {

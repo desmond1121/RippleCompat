@@ -4,15 +4,21 @@
 
 Init library in your `Activity`:
         
-    RippleCompat.init(context, needPalette);
+    RippleCompat.init(context);
 
-Add a simple line of code for each view you want to ripple:
+Add a simple line of code for view or widget you want to ripple:
 
-    RippleCompat.apply(view, rippleColor);
+    RippleCompat.apply(something, rippleColor);
     
 ##Demo
 
+Demo of simple use and background with scaleType:
+
 ![Demo](/demo/Demo.gif)
+
+Demo of palette:
+
+![Palette](/demo/Demo1.gif)
 
 ##Strength
 
@@ -64,7 +70,7 @@ Add dependency in module:
 - 'com.android.support:appcompat-v7:22.2.1'
 - 'com.android.support:palette-v7:22.2.1'
 
-##LISCENSE
+##LICENSE
     
     Copyright 2015 Desmond Yao
     

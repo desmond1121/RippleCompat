@@ -8,4 +8,13 @@
         <item>CENTER_INSIDE</item>
         <item>MATRIX</item>
     </string-array>
+
+    <string-array name="palette_modes">
+        <item>Vibrant</item>
+        <item>Vibrant Light</item>
+        <item>Vibrant Dark</item>
+        <item>Muted</item>
+        <item>Muted Light</item>
+        <item>Muted Dark</item>
+    </string-array>
 </resources>

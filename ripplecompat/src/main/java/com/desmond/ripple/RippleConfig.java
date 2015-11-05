@@ -1,6 +1,5 @@
 package com.desmond.ripple;
 
-import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.view.animation.AccelerateInterpolator;
@@ -14,12 +13,13 @@ public class RippleConfig {
     private int rippleDuration = RippleUtil.RIPPLE_DURATION;
     private int fadeDuration = RippleUtil.FADE_DURATION;
     private int rippleColor = 0x7000ff00;
-    private int paletteMode = RippleUtil.PALETTE_VIBRANT_LIGHT;
+    private RippleUtil.PaletteMode paletteMode = RippleUtil.PaletteMode.VIBRANT;
     private Drawable backgroundDrawable = null;
     private ImageView.ScaleType scaleType = ImageView.ScaleType.FIT_CENTER;
     private int maxRippleRadius = RippleUtil.MAX_RIPPLE_RADIUS;
     private Interpolator interpolator = new AccelerateInterpolator();
     private RippleCompatDrawable.Type type = RippleCompatDrawable.Type.CIRCLE;
+    private boolean isEnablePalette = false;
     private boolean isFull = false;
     private boolean isSpin = false;
 
@@ -122,13 +122,21 @@ public class RippleConfig {
         this.scaleType = scaleType;
     }
 
-    public int getPaletteMode() {
-        return paletteMode;
+    public RippleUtil.PaletteMode getPaletteMode() {
+        if(isEnablePalette){
+            return paletteMode;
+        }else{
+            return RippleUtil.PaletteMode.DISABLED;
+        }
     }
 
-    public void setPaletteMode(int paletteMode) {
-        if(paletteMode <= 15 && paletteMode >= 0) {
+    public void setPaletteMode(RippleUtil.PaletteMode paletteMode) {
+        if(isEnablePalette) {
             this.paletteMode = paletteMode;
         }
+    }
+
+    public void setIsEnablePalette(boolean isEnablePalette) {
+        this.isEnablePalette = isEnablePalette;
     }
 }
