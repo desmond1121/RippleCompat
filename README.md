@@ -26,14 +26,13 @@ Demo of palette:
 - Auto PALETTE ripple color with the background image!
 - Support `ImageView`, `TextView`, `Button`, `EditText`. Especially, `android:scaleType` of `ImageView` also works! 
 - You can choose these type of ripple: Circle, Heart, Triangle;
-- Spinning ripple;
-- STILL EXPERIMENTING MORE.
+- Spinning ripple.
 
 ##Dependency
 
 Add dependency in module:
 
-    compile 'com.github.desmond1121:ripplecompat:1.2.1'
+    compile 'com.github.desmond1121:ripplecompat:0.3.1'
 
 ##More Customization
 
