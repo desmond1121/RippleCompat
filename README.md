@@ -16,7 +16,7 @@ Not need to modify layout file! Add a simple line of code would make your view R
 
 Demo of simple use:
 
-![Demo](/demo/Demo.gif)
+![Demo](/demo/demo_1105.gif)
 
 Demo in Android 2.1: (GenyMotion android keyboard would not triggered normally, if you know how to do this please tell me :)
 
