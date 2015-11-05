@@ -130,15 +130,15 @@ public class RippleCompat {
                     v.getPaddingBottom());
             ((ImageView) v).setImageDrawable(null);
             RippleUtil.setBackground(v, rippleDrawable);
-        } else if (config.getBackgroundDrawable() != null) {
-            rippleDrawable.setBackgroundDrawable(config.getBackgroundDrawable());
-            rippleDrawable.setScaleType(config.getScaleType());
-            RippleUtil.setBackground(v, rippleDrawable);
         } else {
+            if (config.getBackgroundDrawable() != null) {
+                rippleDrawable.setBackgroundDrawable(config.getBackgroundDrawable());
+                rippleDrawable.setScaleType(config.getScaleType());
+            }
+
             background = v.getBackground();
             if (background != null) {
-                LayerDrawable layer = new LayerDrawable(new Drawable[]{background, rippleDrawable});
-                RippleUtil.setBackground(v, layer);
+                RippleUtil.setBackground(v, new LayerDrawable(new Drawable[]{background, rippleDrawable}));
             } else {
                 RippleUtil.setBackground(v, rippleDrawable);
             }
@@ -148,16 +148,18 @@ public class RippleCompat {
     /**
      * Set palette mode of the ripple.
      *
-     * @param v           view
+     * @param v view
      * @param paletteMode palette mode. {@link com.desmond.ripple.RippleUtil.PaletteMode}
      */
     public static void setPaletteMode(View v, RippleUtil.PaletteMode paletteMode) {
         Drawable drawable = v.getBackground();
         if (drawable instanceof RippleCompatDrawable) {
             ((RippleCompatDrawable) drawable).setPaletteMode(paletteMode);
-        } else if (drawable instanceof LayerDrawable
-                && ((LayerDrawable) drawable).getDrawable(1) instanceof RippleCompatDrawable) {
-            ((RippleCompatDrawable) ((LayerDrawable) drawable).getDrawable(1)).setPaletteMode(paletteMode);
+        } else if (drawable instanceof LayerDrawable){
+            int layer = ((LayerDrawable) drawable).getNumberOfLayers();
+            if(((LayerDrawable) drawable).getDrawable(layer - 1) instanceof RippleCompatDrawable){
+                ((RippleCompatDrawable) ((LayerDrawable) drawable).getDrawable(layer - 1)).setPaletteMode(paletteMode);
+            }
         }
     }
 
